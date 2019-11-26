@@ -5,11 +5,7 @@ import './styles.scss';
 import Header from './Header';
 
 const Appointment = () => {
-  return (
-    <div>
-      
-    </div>
-  )
+  return <article className="appointment"></article>
 }
 
 export default Appointment;

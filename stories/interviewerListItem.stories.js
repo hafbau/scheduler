@@ -5,12 +5,8 @@ import { action } from "@storybook/addon-actions";
 
 
 import InterviewerListItem from "components/InterviewerListItem/InterviewerListItem";
+import { interviewer } from './data';
 
-const interviewer = {
-  id: 1,
-  name: "Sylvia Palmer",
-  avatar: "https://i.imgur.com/LpaY82x.png"
-};
 
 storiesOf("InterviewerListItem", module)
   .addParameters({
