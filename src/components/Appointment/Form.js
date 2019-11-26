@@ -13,20 +13,20 @@ const Form = props => {
   };
 
   const cancel = () => {
-
+    reset();
+    props.onCancel();
   };
 
   return (
     <main className='appointment__card appointment__card--create'>
       <section className='appointment__card-left'>
-        <form autoComplete='off'>
+        <form autoComplete='off' onSubmit={event => event.preventDefault()}>
           <input
             className='appointment__create-input text--semi-bold'
             setName={setName}
             type='text'
             placeholder='Enter Student Name'
             value={name}
-            onSubmit={event => event.preventDefault()}
             onChange={e => setName(e.target.value)}
           />
         </form>
@@ -39,10 +39,12 @@ const Form = props => {
       </section>
       <section className='appointment__card-right'>
         <section className='appointment__actions'>
-          <Button onClick={reset} danger>
+          <Button onClick={cancel} danger>
             Cancel
           </Button>
-          <Button confirm>Save</Button>
+          <Button onClick={e => props.onSave(name, interviewer)} confirm>
+            Save
+          </Button>
         </section>
       </section>
     </main>
