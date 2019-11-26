@@ -9,7 +9,7 @@ import Appointment from "components/Appointment";
 const appointments = [
   {
     id: 1,
-    time: "12pm",
+    time: "12pm"
   },
   {
     id: 2,
@@ -19,7 +19,7 @@ const appointments = [
       interviewer: {
         id: 1,
         name: "Sylvia Palmer",
-        avatar: "https://i.imgur.com/LpaY82x.png",
+        avatar: "https://i.imgur.com/LpaY82x.png"
       }
     }
   },
@@ -31,13 +31,13 @@ const appointments = [
       interviewer: {
         id: 4,
         name: "Cohana Roy",
-        avatar: "https://i.imgur.com/FK8V841.jpg",
+        avatar: "https://i.imgur.com/FK8V841.jpg"
       }
     }
   },
   {
     id: 4,
-    time: "3pm",
+    time: "3pm"
   },
   {
     id: 6,
@@ -47,39 +47,34 @@ const appointments = [
       interviewer: {
         id: 5,
         name: "Sven Jones",
-        avatar: "https://i.imgur.com/twYrpay.jpg",
+        avatar: "https://i.imgur.com/twYrpay.jpg"
       }
     }
   },
   {
     id: 9,
-    time: "6pm",
-  },
+    time: "6pm"
+  }
 ];
 
-
-
 export default function Application(props) {
-
   const [state, setState] = useState({
     day: "Monday",
     days: [],
     appointments: {}
   });
 
-  const setDay = day => setState({ ...state, day: day });
+  const setDay = day => setState({ ...state, day });
+  const setDays = days => setState(prev => ({ ...prev, days }));
 
-  useEffect( () => {
- 
+  useEffect(() => {
     axios(`http://localhost:8001/api/days`)
-   .then((res) => {
-
-    setState(prev => ({ ...prev, days: res.data }));
-
-   })
-   .catch(error => console.log(error));
-
-}, []);
+      .then(res => {
+        console.log(res);
+        setDays(res.data);
+      })
+      .catch(error => console.log(error));
+  }, []);
 
   const appointmentList = appointments.map(appointment => (
     <Appointment key={appointment.id} {...appointment} />
@@ -95,11 +90,7 @@ export default function Application(props) {
         />
         <hr className='sidebar__separator sidebar--centered' />
         <nav className='sidebar__menu'>
-          <DayList
-            days={state.days}
-            day={state.day}
-            setDay={setDay}
-          />
+          <DayList days={state.days} day={state.day} setDay={setDay} />
         </nav>
         <img
           className='sidebar__lhl sidebar--centered'
@@ -107,9 +98,7 @@ export default function Application(props) {
           alt='Lighthouse Labs'
         />
       </section>
-      <section className='schedule'>
-        {appointmentList}
-      </section>
+      <section className='schedule'>{appointmentList}</section>
     </main>
   );
 }
