@@ -10,7 +10,7 @@ const Appointment = ({ time, interview }) => {
   return (
     <article className='appointment'>
       <Header time={time} />
-      {interview ? <Show /> : <Empty />}
+      {interview ? <Show {...interview} /> : <Empty />}
     </article>
   );
 };
