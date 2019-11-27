@@ -21,7 +21,6 @@ const getInterview = (state, interview) => {
         result = { ...result, interviewer: state.interviewers[key] };
       }
     }
-    console.log(result)
     return result;
   }
 
