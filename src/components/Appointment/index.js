@@ -8,12 +8,14 @@ import Show from "./Show";
 import Empty from "./Empty";
 import Form from "./Form";
 import Status from "./Status";
+import Confirm from "./Confirm";
 
 const EMPTY = "EMPTY";
 const SHOW = "SHOW";
 const CREATE = "CREATE";
 const SAVING = "SAVING";
 const DELETING = "DELETING";
+const CONFIRM = "CONFIRM";
 
 const Appointment = ({ id, time, interview, interviewers, bookInterview, cancelInterview }) => {
   const { mode, transition, back } = useVisualMode(interview ? SHOW : EMPTY);
@@ -52,6 +54,7 @@ const Appointment = ({ id, time, interview, interviewers, bookInterview, cancelI
       )}
       {mode === SAVING && <Status message={SAVING} />}
       {mode === DELETING && <Status message={DELETING} />}
+      {mode === CONFIRM && <Confirm />}
     </article>
   );
 };
