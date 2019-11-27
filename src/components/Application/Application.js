@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import axios from '../../axios-instance';
 
 import "./Application.scss";
 import { getAppointmentsForDay, getInterview, getInterviewersForDay } from "../../helpers/selectors";
@@ -19,13 +19,23 @@ export default function Application(props) {
 
   const bookInterview = (id, interview) => {
     console.log(id, interview);
+    const appointment = {
+      ...state.appointments[id],
+      interview: { ...interview }
+    };
+    const appointments = {
+      ...state.appointments,
+      [id]: appointment
+    };
+    setState({...state, appointments});
+    
   }
 
   useEffect(() => {
     Promise.all([
-      axios(`http://localhost:8001/api/days`),
-      axios(`http://localhost:8001/api/appointments`),
-      axios(`http://localhost:8001/api/interviewers`)
+      axios(`/days`),
+      axios(`/appointments`),
+      axios(`/interviewers`)
     ])
       .then(res => {
         console.log(res);
@@ -52,6 +62,7 @@ export default function Application(props) {
         time={appointment.time}
         interview={interview}
         interviewers={interviewers}
+        bookInterview={bookInterview}
       />
     );
   });
