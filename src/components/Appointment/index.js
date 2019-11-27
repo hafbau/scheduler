@@ -17,7 +17,14 @@ const SAVING = "SAVING";
 const DELETING = "DELETING";
 const CONFIRM = "CONFIRM";
 
-const Appointment = ({ id, time, interview, interviewers, bookInterview, cancelInterview }) => {
+const Appointment = ({
+  id,
+  time,
+  interview,
+  interviewers,
+  bookInterview,
+  cancelInterview
+}) => {
   const { mode, transition, back } = useVisualMode(interview ? SHOW : EMPTY);
 
   const save = (name, interviewer) => {
@@ -36,14 +43,18 @@ const Appointment = ({ id, time, interview, interviewers, bookInterview, cancelI
     cancelInterview(id)
       .then(() => transition("EMPTY"))
       .catch(err => console.log(err));
-  }
+  };
 
   return (
     <article className='appointment'>
       <Header time={time} />
       {mode === EMPTY && <Empty onAdd={() => transition("CREATE")} />}
       {mode === SHOW && (
-        <Show student={interview.student} interviewer={interview.interviewer} onDelete={onDelete} />
+        <Show
+          student={interview.student}
+          interviewer={interview.interviewer}
+          onDelete={() => transition("CONFIRM")}
+        />
       )}
       {mode === CREATE && (
         <Form
@@ -52,9 +63,15 @@ const Appointment = ({ id, time, interview, interviewers, bookInterview, cancelI
           onSave={save}
         />
       )}
-      {mode === SAVING && <Status message={SAVING} />}
-      {mode === DELETING && <Status message={DELETING} />}
-      {mode === CONFIRM && <Confirm />}
+      {mode === SAVING && <Status message={"Saving"} />}
+      {mode === DELETING && <Status message={"Deleting"} />}
+      {mode === CONFIRM && (
+        <Confirm
+          message={"Are you sure you would like to delete?"}
+          onCancel={() => transition("SHOW")}
+          onConfirm={onDelete}
+        />
+      )}
     </article>
   );
 };
