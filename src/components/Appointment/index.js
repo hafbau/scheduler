@@ -20,8 +20,9 @@ const Appointment = ({ id, time, interview, interviewers, bookInterview }) => {
       student: name,
       interviewer
     };
-    bookInterview(id, interview);
-    transition("SHOW")
+    bookInterview(id, interview)
+    .then(() => transition("SHOW"))
+    .catch(err => console.log(err));
   };
 
   return (

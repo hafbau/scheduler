@@ -26,16 +26,16 @@ export default function Application(props) {
     const appointments = {
       ...state.appointments,
       [id]: appointment
-    };
-    setState({...state, appointments});
-    
+    }
+    return axios.put(`/appointments/${id}`, {interview})
+    .then(() => setState({...state, appointments}))
   }
 
   useEffect(() => {
     Promise.all([
-      axios(`/days`),
-      axios(`/appointments`),
-      axios(`/interviewers`)
+      axios('/days'),
+      axios('/appointments'),
+      axios('/interviewers')
     ])
       .then(res => {
         console.log(res);

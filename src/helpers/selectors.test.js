@@ -45,6 +45,11 @@ const state = {
       id: 3,
       name: "Mildred Nazir",
       avatar: "https://i.imgur.com/T2WwVfS.png"
+      },
+    "4": {
+      id: 4,
+      name: "Mildred K",
+      avatar: "https://i.imgur.com/T2WwVfS.png"
       }
   }
 };
