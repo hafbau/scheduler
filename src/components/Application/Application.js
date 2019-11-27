@@ -1,8 +1,12 @@
 import React, { useState, useEffect } from "react";
-import axios from '../../axios-instance';
+import axios from "../../axios-instance";
 
 import "./Application.scss";
-import { getAppointmentsForDay, getInterview, getInterviewersForDay } from "../../helpers/selectors";
+import {
+  getAppointmentsForDay,
+  getInterview,
+  getInterviewersForDay
+} from "../../helpers/selectors";
 
 import DayList from "components/DayList/DayList";
 import Appointment from "components/Appointment";
@@ -26,16 +30,31 @@ export default function Application(props) {
     const appointments = {
       ...state.appointments,
       [id]: appointment
-    }
-    return axios.put(`/appointments/${id}`, {interview})
-    .then(() => setState({...state, appointments}))
+    };
+    return axios
+      .put(`/appointments/${id}`, { interview })
+      .then(() => setState({ ...state, appointments }));
+  };
+
+  const cancelInterview = (id) => {
+    const appointment = {
+      ...state.appointments[id],
+      interview: null
+    };
+    const appointments = {
+      ...state.appointments,
+      [id]: appointment
+    };
+    return axios
+      .delete(`/appointments/${id}`)
+      .then(() => setState(prev => ({ ...prev, appointments })));
   }
 
   useEffect(() => {
     Promise.all([
-      axios('/days'),
-      axios('/appointments'),
-      axios('/interviewers')
+      axios("/days"),
+      axios("/appointments"),
+      axios("/interviewers")
     ])
       .then(res => {
         console.log(res);
@@ -63,6 +82,7 @@ export default function Application(props) {
         interview={interview}
         interviewers={interviewers}
         bookInterview={bookInterview}
+        cancelInterview={cancelInterview}
       />
     );
   });
