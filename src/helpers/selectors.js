@@ -31,10 +31,10 @@ const getInterviewersForDay = (state, day) => {
   const filteredDays = state.days.filter(item => item.name === day, []);
   let result = [];
   if (filteredDays.length > 0) {
-    for (const key in state.appointments) {
-      filteredDays[0].appointments.forEach(el => {
+    for (const key in state.interviewers) {
+      filteredDays[0].interviewers.forEach(el => {
         if (el === Number(key)) {
-          result.push(state.appointments[key]);
+          result.push(state.interviewers[key]);
         }
       });
     }

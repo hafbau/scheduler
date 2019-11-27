@@ -16,9 +16,9 @@ const useVisualMode = initial => {
     if (history.length > 1) {
       history.pop();
       setHistory(history);
-      setMode(history.pop());
+      setMode(mode => history.pop());
     } else {
-      setMode(history[0]);
+      setMode(mode => history[0]);
     }
   };
 
