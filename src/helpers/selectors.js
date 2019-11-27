@@ -1,3 +1,5 @@
+import { interviewer } from "../../stories/data";
+
 const getAppointmentsForDay = (state, day) => {
   const filteredDays = state.days.filter(item => item.name === day, []);
   let result = [];
@@ -13,6 +15,18 @@ const getAppointmentsForDay = (state, day) => {
   return result;
 };
 
-const getInterview = (state, interview) => {};
+const getInterview = (state, interview) => {
+  if (interview) {
+    let result = { student: interview.student };
+    for (const key in state.interviewers) {
+      if (interview.interviewer === Number(key)) {
+        result = { ...result, interviewer: state.interviewers[key] };
+      }
+    }
+    return result;
+  }
+
+  return null;
+};
 
 export { getAppointmentsForDay, getInterview };

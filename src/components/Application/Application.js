@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 
 import "./Application.scss";
-import { getAppointmentsForDay } from "../../helpers/selectors";
+import { getAppointmentsForDay, getInterview } from "../../helpers/selectors";
 
 import DayList from "components/DayList/DayList";
 import Appointment from "components/Appointment";
@@ -26,18 +26,23 @@ export default function Application(props) {
     ])
       .then(res => {
         console.log(res);
-        setState(prev => ({...prev, days: res[0].data, appointments: res[1].data, interviewers: res[2].data}));
-        
+        setState(prev => ({
+          ...prev,
+          days: res[0].data,
+          appointments: res[1].data,
+          interviewers: res[2].data
+        }));
       })
       .catch(error => console.log(error));
-
   }, []);
 
   const appointments = getAppointmentsForDay(state, state.day);
 
-  const appointmentList = appointments.map(appointment => (
-    <Appointment key={appointment.id} {...appointment} />
-  ));
+  const appointmentList = appointments.map(appointment => {
+
+    const interview = getInterview(state, appointment.interview);
+    return <Appointment key={appointment.id} {...appointment} />;
+  });
 
   return (
     <main className='layout'>
