@@ -18,6 +18,7 @@ const useVisualMode = initial => {
       history.pop();
       setMode(mode => history[history.length - 1]);
     }
+
   };
 
   return {

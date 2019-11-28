@@ -39,20 +39,14 @@ const Appointment = ({
     transition(SAVING);
     bookInterview(id, interview)
       .then(() => transition(SHOW))
-      .catch(err => {
-        console.log(err);
-        transition(ERROR_SAVE, true);
-      });
+      .catch(err => transition(ERROR_SAVE, true));
   };
 
   const onDelete = () => {
-    transition(DELETING);
+    transition(DELETING, true);
     cancelInterview(id)
       .then(() => transition(EMPTY))
-      .catch(err => {
-        console.log(err);
-        transition(ERROR_DELETE, true);
-      });
+      .catch(err => transition(ERROR_DELETE, true));
   };
 
   return (
@@ -98,7 +92,7 @@ const Appointment = ({
       {mode === ERROR_DELETE && (
         <Error
           message={"Can not delete the appointment"}
-          onClose={() => back()}
+          onClose={() => transition(SHOW)}
         />
       )}
     </article>
