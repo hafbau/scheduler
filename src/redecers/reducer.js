@@ -1,4 +1,9 @@
-import { SET_DAY, SET_APPLICATION_DATA, SET_INTERVIEW } from "./actionTypes";
+import {
+  SET_DAY,
+  SET_APPLICATION_DATA,
+  SET_INTERVIEW,
+  SET_SPOTS
+} from "./actionTypes";
 
 export const INITIAL_STATE = {
   day: "Monday",
@@ -19,10 +24,12 @@ export const reducer = (state, action) => {
         interviewers: action.interviewers
       };
     case SET_INTERVIEW:
-      return {...state, appointments: action.payload};
+      return { ...state, appointments: action.payload };
+    case SET_SPOTS:
+      return { ...state, days: action.payload };
     default:
       throw new Error(
         `Tried to reduce with unsupported action type: ${action.type}`
       );
   }
-}
+};

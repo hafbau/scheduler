@@ -42,4 +42,48 @@ const getInterviewersForDay = (state, day) => {
   return result;
 };
 
-export { getAppointmentsForDay, getInterview, getInterviewersForDay };
+const getBookAppointmentDay = (state, id) => {
+  const dayObj = state.days.reduce((acc, item) => {
+    const findDay = item.appointments.filter(el => el === id);
+    if (findDay[0] === id) {
+      return { ...item };
+    }
+    return acc;
+  }, {});
+  return dayObj;
+};
+
+const decreaseSpots = (state, findDay) => {
+  const days = state.days.map((item, index) => {
+    if (index !== findDay.id - 1) {
+      return item;
+    }
+    return {
+      ...findDay,
+      spots: item.spots - 1
+    };
+  });
+  return days;
+}
+
+const increaseSpots = (state, findDay) => {
+  const days = state.days.map((item, index) => {
+    if (index !== findDay.id - 1) {
+      return item;
+    }
+    return {
+      ...findDay,
+      spots: item.spots + 1
+    };
+  });
+  return days;
+}
+
+export {
+  getAppointmentsForDay,
+  getInterview,
+  getInterviewersForDay,
+  getBookAppointmentDay,
+  decreaseSpots,
+  increaseSpots
+};
