@@ -6,18 +6,18 @@ const useVisualMode = initial => {
 
   const transition = (mode, replace = false) => {
     if (replace) {
-      let newHistory = history.pop();
-      setHistory([newHistory])
+      history.pop();
+      setHistory(history);
     }
-    setHistory([...history, mode]);
+    setHistory(prev => [...prev, mode]);
     setMode(mode);
   };
 
   const back = () => {
     if (history.length > 1) {
       history.pop();
-      setMode(mode => history[history.length-1]);
-    } 
+      setMode(mode => history[history.length - 1]);
+    }
   };
 
   return {
