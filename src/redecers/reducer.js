@@ -24,7 +24,16 @@ export const reducer = (state, action) => {
         interviewers: action.interviewers
       };
     case SET_INTERVIEW:
-      return { ...state, appointments: action.payload };
+      return {
+        ...state,
+        appointments: {
+          ...state.appointments,
+          [action.id]: {
+            ...state.appointments[action.id],
+            interview: action.interview
+          }
+        }
+      };
     case SET_SPOTS:
       return { ...state, days: action.payload };
     default:

@@ -20,6 +20,7 @@ const useApplicationData = () => {
   const setDay = day => dispatch({ type: SET_DAY, payload: day });
 
   useEffect(() => {
+
     Promise.all([
       axios("/days"),
       axios("/appointments"),
@@ -35,42 +36,76 @@ const useApplicationData = () => {
         });
       })
       .catch(error => console.log(error));
+      return () => {
+
+      }
   }, []);
 
+  useEffect(() => {
+
+  const socket = new WebSocket(process.env.REACT_APP_WEBSOCKET_URL);
+   socket.onopen = ()=>{
+      console.log('Connected');
+      socket.send("ping!"); 
+    };
+
+    socket.onmessage = (message) => {
+      console.log("incomming", message);
+
+      const msg = JSON.parse(message.data);
+      console.log("incomming", msg);
+
+      switch(msg.type) {
+        case "SET_INTERVIEW":
+           //dispatch({ type: SET_INTERVIEW, id: id, interview: { ...interview } });
+          break;
+        default:
+          throw new Error(
+            "Socket error"
+          );
+      }
+
+
+    }
+    return (() => {
+      socket.close();
+    })
+
+  }, [])
+
   const bookInterview = (id, interview) => {
-    console.log("ID", id, "interview", interview);
-    const appointment = {
-      ...state.appointments[id],
-      interview: { ...interview }
-    };
-    const appointments = {
-      ...state.appointments,
-      [id]: appointment
-    };
+    // const appointment = {
+    //   ...state.appointments[id],
+    //   interview: { ...interview }
+    // };
+    // const appointments = {
+    //   ...state.appointments,
+    //   [id]: appointment
+    // };
     const findDay = getBookAppointmentDay(state, id);
     const days = decreaseSpots(state, findDay);
 
     return axios.put(`/appointments/${id}`, { interview }).then(() => {
-      dispatch({ type: SET_INTERVIEW, payload: appointments });
+      dispatch({ type: SET_INTERVIEW, id: id, interview: { ...interview } });
       dispatch({ type: SET_SPOTS, payload: days });
     });
   };
 
   const cancelInterview = id => {
-    const appointment = {
-      ...state.appointments[id],
-      interview: null
-    };
-    const appointments = {
-      ...state.appointments,
-      [id]: appointment
-    };
+    // const appointment = {
+    //   ...state.appointments[id],
+    //   interview: null
+    // };
+    // const appointments = {
+    //   ...state.appointments,
+    //   [id]: appointment
+    // };
 
     const findDay = getBookAppointmentDay(state, id);
     const days = increaseSpots(state, findDay);
 
     return axios.delete(`/appointments/${id}`).then(() => {
-      dispatch({ type: SET_INTERVIEW, payload: appointments });
+      dispatch({ type: SET_INTERVIEW, id: id, interview: null });
       dispatch({ type: SET_SPOTS, payload: days });
     });
   };
