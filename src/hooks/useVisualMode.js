@@ -6,7 +6,8 @@ const useVisualMode = initial => {
 
   const transition = (mode, replace = false) => {
     if (replace) {
-      history.pop();
+      let newHistory = history.pop();
+      setHistory([newHistory])
     }
     setHistory([...history, mode]);
     setMode(mode);
@@ -15,11 +16,8 @@ const useVisualMode = initial => {
   const back = () => {
     if (history.length > 1) {
       history.pop();
-      setHistory(history);
-      setMode(mode => history.pop());
-    } else {
-      setMode(mode => history[0]);
-    }
+      setMode(mode => history[history.length-1]);
+    } 
   };
 
   return {

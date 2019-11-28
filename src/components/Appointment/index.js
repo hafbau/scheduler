@@ -16,6 +16,7 @@ const CREATE = "CREATE";
 const SAVING = "SAVING";
 const DELETING = "DELETING";
 const CONFIRM = "CONFIRM";
+const EDIT = "EDIT";
 
 const Appointment = ({
   id,
@@ -48,12 +49,13 @@ const Appointment = ({
   return (
     <article className='appointment'>
       <Header time={time} />
-      {mode === EMPTY && <Empty onAdd={() => transition("CREATE")} />}
+      {mode === EMPTY && <Empty onAdd={() => transition(CREATE)} />}
       {mode === SHOW && (
         <Show
           student={interview.student}
           interviewer={interview.interviewer}
-          onDelete={() => transition("CONFIRM")}
+          onDelete={() => transition(CONFIRM)}
+          onEdit={() => transition(EDIT)}
         />
       )}
       {mode === CREATE && (
@@ -68,8 +70,17 @@ const Appointment = ({
       {mode === CONFIRM && (
         <Confirm
           message={"Are you sure you would like to delete?"}
-          onCancel={() => transition("SHOW")}
+          onCancel={() => back()}
           onConfirm={onDelete}
+        />
+      )}
+      {mode === EDIT && (
+        <Form
+          name={interview.student}
+          interviewer={interview.interviewer.id}
+          onCancel={() => back()}
+          interviewers={interviewers}
+          onSave={save}
         />
       )}
     </article>
