@@ -1,17 +1,31 @@
-import { useState, useEffect, useReducer } from "react";
+import { useEffect, useReducer } from "react";
 import axios from "../axios-instance";
+import { SET_DAY, SET_APPLICATION_DATA, SET_INTERVIEW } from "../redecers/actionTypes";
+import { reducer } from '../redecers/reducer';
+import { INITIAL_STATE } from '../redecers/reducer';
 
-const useApplicationData = initial => {
-  const [state, setState] = useState({
-    day: "Monday",
-    days: [],
-    appointments: {},
-    interviewers: {}
-  });
 
-  const setDay = day => setState({ ...state, day });
+const useApplicationData = () => {
 
-  const bookInterview = (id, interview) => {
+const [state, dispatch] = useReducer(reducer, INITIAL_STATE);
+  
+const setDay = day => dispatch({ type: SET_DAY, payload: day });
+
+useEffect(() => {
+  Promise.all([axios("/days"), axios("/appointments"), axios("/interviewers")])
+    .then(res => {
+      console.log(res);
+      dispatch({
+        type: SET_APPLICATION_DATA,
+        days: res[0].data,
+        appointments: res[1].data,
+        interviewers: res[2].data
+      });
+    })
+    .catch(error => console.log(error));
+}, []);
+  
+const bookInterview = (id, interview) => {
     const appointment = {
       ...state.appointments[id],
       interview: { ...interview }
@@ -22,10 +36,10 @@ const useApplicationData = initial => {
     };
     return axios
       .put(`/appointments/${id}`, { interview })
-      .then(() => setState({ ...state, appointments }));
+      .then(() => dispatch({ type: SET_INTERVIEW, payload: appointments }));
   };
-
-  const cancelInterview = id => {
+  
+ const cancelInterview = id => {
     const appointment = {
       ...state.appointments[id],
       interview: null
@@ -36,26 +50,8 @@ const useApplicationData = initial => {
     };
     return axios
       .delete(`/appointments/${id}`)
-      .then(() => setState(prev => ({ ...prev, appointments })));
+      .then(() => dispatch({ type: SET_INTERVIEW, payload: appointments }));
   };
-
-  useEffect(() => {
-    Promise.all([
-      axios("/days"),
-      axios("/appointments"),
-      axios("/interviewers")
-    ])
-      .then(res => {
-        console.log(res);
-        setState(prev => ({
-          ...prev,
-          days: res[0].data,
-          appointments: res[1].data,
-          interviewers: res[2].data
-        }));
-      })
-      .catch(error => console.log(error));
-  }, []);
 
   return {
     state,
