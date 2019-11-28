@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from "react";
-import axios from "../../axios-instance";
+import React from "react";
 
 import "./Application.scss";
 import {
@@ -7,67 +6,19 @@ import {
   getInterview,
   getInterviewersForDay
 } from "../../helpers/selectors";
-
+import useApplicationData from "../../hooks/useApplicationData";
 import DayList from "components/DayList/DayList";
 import Appointment from "components/Appointment";
 
 export default function Application(props) {
-  const [state, setState] = useState({
-    day: "Monday",
-    days: [],
-    appointments: {},
-    interviewers: {}
-  });
 
-  const setDay = day => setState({ ...state, day });
-
-  const bookInterview = (id, interview) => {
-    console.log(id, interview);
-    const appointment = {
-      ...state.appointments[id],
-      interview: { ...interview }
-    };
-    const appointments = {
-      ...state.appointments,
-      [id]: appointment
-    };
-    return axios
-      .put(`/appointments/${id}`, { interview })
-      .then(() => setState({ ...state, appointments }));
-  };
-
-  const cancelInterview = (id) => {
-    const appointment = {
-      ...state.appointments[id],
-      interview: null
-    };
-    const appointments = {
-      ...state.appointments,
-      [id]: appointment
-    };
-    return axios
-      .delete(`/appointments/${id}`)
-      .then(() => setState(prev => ({ ...prev, appointments })));
-  }
-
-  useEffect(() => {
-    Promise.all([
-      axios("/days"),
-      axios("/appointments"),
-      axios("/interviewers")
-    ])
-      .then(res => {
-        console.log(res);
-        setState(prev => ({
-          ...prev,
-          days: res[0].data,
-          appointments: res[1].data,
-          interviewers: res[2].data
-        }));
-      })
-      .catch(error => console.log(error));
-  }, []);
-
+  const {
+    state,
+    setDay,
+    bookInterview,
+    cancelInterview
+  } = useApplicationData();
+  
   const appointments = getAppointmentsForDay(state, state.day);
   const interviewers = getInterviewersForDay(state, state.day);
 
