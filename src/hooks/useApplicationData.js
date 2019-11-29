@@ -57,21 +57,30 @@ const useApplicationData = () => {
 
       switch(msg.type) {
         case "SET_INTERVIEW":
-           //dispatch({ type: SET_INTERVIEW, id: id, interview: { ...interview } });
+          const id = msg.id;
+          const interview = msg.interview;
+          const findDay = getBookAppointmentDay(state, id);
+          if(interview) {
+            const days = decreaseSpots(state, findDay);
+            dispatch({ type: SET_INTERVIEW, id: id, interview: { ...interview } });
+            dispatch({ type: SET_SPOTS, payload: days });
+          } else {
+            const days = increaseSpots(state, findDay);
+            dispatch({ type: SET_INTERVIEW, id: id, interview: null });
+            dispatch({ type: SET_SPOTS, payload: days });
+          }
           break;
         default:
           throw new Error(
             "Socket error"
           );
       }
-
-
     }
     return (() => {
       socket.close();
     })
 
-  }, [])
+  }, [state])
 
   const bookInterview = (id, interview) => {
     // const appointment = {
