@@ -46,7 +46,6 @@ const useApplicationData = () => {
   const socket = new WebSocket(process.env.REACT_APP_WEBSOCKET_URL);
    socket.onopen = ()=>{
       console.log('Connected');
-      socket.send("ping!"); 
     };
 
     socket.onmessage = (message) => {
@@ -83,14 +82,7 @@ const useApplicationData = () => {
   }, [state])
 
   const bookInterview = (id, interview) => {
-    // const appointment = {
-    //   ...state.appointments[id],
-    //   interview: { ...interview }
-    // };
-    // const appointments = {
-    //   ...state.appointments,
-    //   [id]: appointment
-    // };
+
     const findDay = getBookAppointmentDay(state, id);
     const days = decreaseSpots(state, findDay);
 
@@ -101,14 +93,6 @@ const useApplicationData = () => {
   };
 
   const cancelInterview = id => {
-    // const appointment = {
-    //   ...state.appointments[id],
-    //   interview: null
-    // };
-    // const appointments = {
-    //   ...state.appointments,
-    //   [id]: appointment
-    // };
 
     const findDay = getBookAppointmentDay(state, id);
     const days = increaseSpots(state, findDay);
