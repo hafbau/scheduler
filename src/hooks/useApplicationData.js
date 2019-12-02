@@ -22,12 +22,11 @@ const useApplicationData = () => {
   useEffect(() => {
 
     Promise.all([
-      axios("/days"),
-      axios("/appointments"),
-      axios("/interviewers")
+      axios.get("/days"),
+      axios.get("/appointments"),
+      axios.get("/interviewers")
     ])
       .then(res => {
-        console.log(res);
         dispatch({
           type: SET_APPLICATION_DATA,
           days: res[0].data,
