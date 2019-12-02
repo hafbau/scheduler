@@ -29,17 +29,16 @@ const Appointment = ({
   bookInterview,
   cancelInterview
 }) => {
-  
   const { mode, transition, back } = useVisualMode(interview ? SHOW : EMPTY);
 
   useEffect(() => {
     if (interview && mode === EMPTY) {
-     transition(SHOW);
+      transition(SHOW);
     }
     if (interview === null && mode === SHOW) {
-     transition(EMPTY);
+      transition(EMPTY);
     }
-   }, [interview, transition, mode]);
+  }, [interview, transition, mode]);
 
   const save = (name, interviewer) => {
     const interview = {
@@ -60,7 +59,7 @@ const Appointment = ({
   };
 
   return (
-    <article className='appointment'>
+    <article className='appointment' data-testid='appointment'>
       <Header time={time} />
       {mode === EMPTY && <Empty onAdd={() => transition(CREATE)} />}
       {mode === SHOW && interview && (
