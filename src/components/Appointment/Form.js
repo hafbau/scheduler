@@ -27,6 +27,7 @@ const Form = props => {
             placeholder='Enter Student Name'
             value={name}
             onChange={e => setName(e.target.value)}
+            data-testid="student-name-input"
           />
         </form>
         <InterviewerList
