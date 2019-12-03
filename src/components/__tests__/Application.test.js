@@ -132,6 +132,7 @@ describe("Application", () => {
     expect(getByText(day, "1 spot remaining")).toBeInTheDocument();
   });
 
+  //------------Error on saving----------//
   it("shows the save error when failing to save an appointment", async () => {
     axios.put.mockRejectedValueOnce();
     const { container } = render(<Application />);
@@ -158,6 +159,8 @@ describe("Application", () => {
    
   });
 
+  //------------Error on deleting----------//
+
   it("shows the delete error when failing to delete an existing appointment", async () => {
     axios.delete.mockRejectedValueOnce();
     const { container } = render(<Application />);
@@ -182,6 +185,7 @@ describe("Application", () => {
     expect(getByText(appointment, "Can not delete the appointment")).toBeInTheDocument();
   });
 
+  //------------Testing cancel on add----------//
   it("cancel creating interview on clicking cancell button", async () => {
     axios.put.mockRejectedValueOnce();
     const { container } = render(<Application />);
@@ -199,6 +203,7 @@ describe("Application", () => {
    
   });
 
+  //------------Testing cancel on delete----------//
   it("cancel deleting interview on clicking cancell button", async () => {
     const { container } = render(<Application />);
 
