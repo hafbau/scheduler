@@ -27,18 +27,19 @@ const Appointment = ({
   interview,
   interviewers,
   bookInterview,
-  cancelInterview
+  cancelInterview,
+  editInterview
 }) => {
   const { mode, transition, back } = useVisualMode(interview ? SHOW : EMPTY);
 
-  useEffect(() => {
-    if (interview && mode === EMPTY) {
-      transition(SHOW);
-    }
-    if (interview === null && mode === SHOW) {
-      transition(EMPTY);
-    }
-  }, [interview, transition, mode]);
+  // useEffect(() => {
+  //   if (interview && mode === EMPTY) {
+  //     transition(SHOW);
+  //   }
+  //   if (interview === null && mode === SHOW) {
+  //     transition(EMPTY);
+  //   }
+  // }, [interview, transition, mode]);
 
   const save = (name, interviewer) => {
     const interview = {
@@ -47,6 +48,17 @@ const Appointment = ({
     };
     transition(SAVING);
     bookInterview(id, interview)
+      .then(() => transition(SHOW))
+      .catch(err => transition(ERROR_SAVE, true));
+  };
+
+  const editForm = (name, interviewer) => {
+    const interview = {
+      student: name,
+      interviewer
+    };
+    transition(SAVING);
+    editInterview(id, interview)
       .then(() => transition(SHOW))
       .catch(err => transition(ERROR_SAVE, true));
   };
@@ -92,7 +104,7 @@ const Appointment = ({
           interviewer={interview.interviewer.id}
           onCancel={() => back()}
           interviewers={interviewers}
-          onSave={save}
+          onSave={editForm}
         />
       )}
       {mode === ERROR_SAVE && (

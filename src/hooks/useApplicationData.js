@@ -6,8 +6,8 @@ import {
   SET_INTERVIEW,
   SET_SPOTS
 } from "../redecers/actionTypes";
-import { reducer } from "../redecers/reducer";
-import { INITIAL_STATE } from "../redecers/reducer";
+import { reducer } from "../redecers/application";
+import { INITIAL_STATE } from "../redecers/application";
 import {
   getBookAppointmentDay,
   decreaseSpots,
@@ -27,6 +27,7 @@ const useApplicationData = () => {
       axios.get("/interviewers")
     ])
       .then(res => {
+        console.log(res)
         dispatch({
           type: SET_APPLICATION_DATA,
           days: res[0].data,
@@ -59,9 +60,9 @@ const useApplicationData = () => {
           const interview = msg.interview;
           const findDay = getBookAppointmentDay(state, id);
           if(interview) {
-            const days = decreaseSpots(state, findDay);
-            dispatch({ type: SET_INTERVIEW, id: id, interview: { ...interview } });
-            dispatch({ type: SET_SPOTS, payload: days });
+              const days = decreaseSpots(state, findDay);
+              dispatch({ type: SET_INTERVIEW, id: id, interview: { ...interview } });
+              dispatch({ type: SET_SPOTS, payload: days });
           } else {
             const days = increaseSpots(state, findDay);
             dispatch({ type: SET_INTERVIEW, id: id, interview: null });
@@ -91,6 +92,12 @@ const useApplicationData = () => {
     });
   };
 
+  const editInterview = (id, interview) => {
+    return axios.put(`/appointments/${id}`, { interview }).then(() => {
+      dispatch({ type: SET_INTERVIEW, id: id, interview: { ...interview } });
+    });
+  };
+
   const cancelInterview = id => {
 
     const findDay = getBookAppointmentDay(state, id);
@@ -106,7 +113,8 @@ const useApplicationData = () => {
     state,
     setDay,
     bookInterview,
-    cancelInterview
+    cancelInterview,
+    editInterview
   };
 };
 
