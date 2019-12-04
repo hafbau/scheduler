@@ -43,6 +43,7 @@ export default function Application(props) {
   return (
     <main className='layout'>
       <section className='sidebar'>
+        <h1>Yello!</h1>
         <img
           className='sidebar--centered'
           src='images/logo.png'
