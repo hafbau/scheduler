@@ -61,3 +61,20 @@ npm run cypress
 * Axios, WebSockets
 * Storybook, Webpack Dev Server, Jest, Testing Library, Cypress
 
+## Final Product
+
+Book an appointment:
+!["Book an appointment"](https://github.com/Zhabskyi/scheduler/blob/master/public/images/1.png?raw=true)
+
+Appointment highlights:
+!["highlights"](https://github.com/Zhabskyi/scheduler/blob/master/public/images/2.png?raw=true)
+
+Error show in case of request fail:
+![error](https://github.com/Zhabskyi/scheduler/blob/master/public/images/3.png?raw=true)
+
+## Reference
+* [React Documentation](https://reactjs.org/docs/getting-started.html)
+* [Storybook Documentation](https://storybook.js.org/docs/basics/introduction/)
+* [Jest Documentation](https://jestjs.io/docs/en/getting-started)
+* [Axios Example](https://github.com/axios/axios#example)
+* [Cypress Documentation](https://docs.cypress.io/guides/overview/why-cypress.html#In-a-nutshell)
