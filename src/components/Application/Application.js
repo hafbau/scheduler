@@ -39,9 +39,9 @@ export default function Application(props) {
       />
     );
   });
-console.log('process.env.API :', process.env.API);
-console.log('process.env.REACT_APP_WEBSOCKET_URL :', process.env.REACT_APP_WEBSOCKET_URL);
-console.log('process.env.NODE_ENV :', process.env.NODE_ENV);
+console.log('prfkjhfocess.env.API_URL :', process.env.API_URL);
+console.log('prfkjhfocess.env.REACT_APP_WEBSOCKET_URL :', process.env.REACT_APP_WEBSOCKET_URL);
+console.log('prfkjhfocess.env.NODE_ENV :', process.env.NODE_ENV);
   return (
     <main className='layout'>
       <section className='sidebar'>
