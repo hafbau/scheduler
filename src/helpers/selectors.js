@@ -64,7 +64,7 @@ const decreaseSpots = (state, findDay) => {
     };
   });
   return days;
-}
+};
 
 const increaseSpots = (state, findDay) => {
   const days = state.days.map((item, index) => {
@@ -77,7 +77,7 @@ const increaseSpots = (state, findDay) => {
     };
   });
   return days;
-}
+};
 
 export {
   getAppointmentsForDay,

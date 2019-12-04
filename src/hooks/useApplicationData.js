@@ -20,14 +20,12 @@ const useApplicationData = () => {
   const setDay = day => dispatch({ type: SET_DAY, payload: day });
 
   useEffect(() => {
-
     Promise.all([
       axios.get("/days"),
       axios.get("/appointments"),
       axios.get("/interviewers")
     ])
       .then(res => {
-        console.log(res)
         dispatch({
           type: SET_APPLICATION_DATA,
           days: res[0].data,
@@ -36,33 +34,31 @@ const useApplicationData = () => {
         });
       })
       .catch(error => console.log(error));
-      return () => {
-
-      }
+    return () => {};
   }, []);
 
   useEffect(() => {
-
-  const socket = new WebSocket(process.env.REACT_APP_WEBSOCKET_URL);
-   socket.onopen = ()=>{
-      console.log('Connected');
+    const socket = new WebSocket(process.env.REACT_APP_WEBSOCKET_URL);
+    socket.onopen = () => {
+      //console.log('Connected');
     };
 
-    socket.onmessage = (message) => {
-      console.log("incomming", message);
-
+    socket.onmessage = message => {
       const msg = JSON.parse(message.data);
-      console.log("incomming", msg);
 
-      switch(msg.type) {
+      switch (msg.type) {
         case "SET_INTERVIEW":
           const id = msg.id;
           const interview = msg.interview;
           const findDay = getBookAppointmentDay(state, id);
-          if(interview) {
-              const days = decreaseSpots(state, findDay);
-              dispatch({ type: SET_INTERVIEW, id: id, interview: { ...interview } });
-              dispatch({ type: SET_SPOTS, payload: days });
+          if (interview) {
+            const days = decreaseSpots(state, findDay);
+            dispatch({
+              type: SET_INTERVIEW,
+              id: id,
+              interview: { ...interview }
+            });
+            dispatch({ type: SET_SPOTS, payload: days });
           } else {
             const days = increaseSpots(state, findDay);
             dispatch({ type: SET_INTERVIEW, id: id, interview: null });
@@ -70,19 +66,15 @@ const useApplicationData = () => {
           }
           break;
         default:
-          throw new Error(
-            "Socket error"
-          );
+          throw new Error("Socket error");
       }
-    }
-    return (() => {
+    };
+    return () => {
       socket.close();
-    })
-
-  }, [state])
+    };
+  }, [state]);
 
   const bookInterview = (id, interview) => {
-
     const findDay = getBookAppointmentDay(state, id);
     const days = decreaseSpots(state, findDay);
 
@@ -99,7 +91,6 @@ const useApplicationData = () => {
   };
 
   const cancelInterview = id => {
-
     const findDay = getBookAppointmentDay(state, id);
     const days = increaseSpots(state, findDay);
 
